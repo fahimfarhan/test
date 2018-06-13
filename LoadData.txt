@@ -1,0 +1,28 @@
+LOAD DATA:
+
+place target data in gurugraphics/lol folder and rename as Database.csv
+alreay done in this case
+
+Then open terminal and:...
+$ sourc env/bin/activate
+(env)$ python manage.py runserver
+
+open 127.0.0.:8000/myapp
+
+hit load data
+
+wait until finish. This will store all data in gurugraphics/db.sqlite3
+
+close terminal
+
+
+Start Filter:
+
+$ sourc env/bin/activate
+(env)$ python ScriptPrototype.py
+
+wait forever
+If need to close pc, simply close terminal and close pc.
+then repeat line 21, 22
+
+Okay! Now it;s filtering!!!
