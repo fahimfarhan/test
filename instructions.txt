@@ -1,0 +1,95 @@
+1. extract it
+2. open gurugraphics
+3. install requirements
+First we need virtualenv installed. useful stuff
+  
+$ pip install virtualenv
+
+Once installed: 
+
+$ cd gurugraphics
+$ virtualenv env # this creates the env folder. we need it!!!
+$ source env/bin/activate   # this activates env
+
+(env)$ pip install -r requirements.txt # installs all the dependencies  # slow net error! shit! Anyways this will install all the dependencies
+
+Okay ! now we are good to go!
+
+(env)$ python manage.py makemigrations
+(env)$ python manage.py migrate
+(env)$ python manage.py runserver
+
+Now open 127.0.0.1:8000/myapp on your browser
+
+You will see loaddata2 button. 
+
+open email digging.receiver@hotmail.com pass:  $!digging1234
+
+Here you will see lolDumpData.csv files coming from gg1, gg7,gg8, guru-vostro, guru2-vostro etc.
+download those csv files and place them at gurugraphics/lol folder.
+
+Make sure the file name is lolDumpData.csv
+
+go back to 127.0.0.1:8000/myapp , hit loaddata2 button.
+this will load data inside db.sqlite3
+
+just a moment. these are old datas. I've added 3 new columns. Need to add them.
+Hopefully you won't face this pproblem.
+Okay... we are having some issues but they wont occur in newly filtered data set.
+
+suppose lolDumpData.csv is loaded. then delete it, rename lolDumpData(1).csv into lolDumpData.csv
+then repeat.
+repeat process for all the lolDumpData.csv files
+
+Once all of them are loaded, open up gurugraphics/myapp/loaddata.py file
+
+There is a function named  def create_csv_shikder(request):
+This is where you want to make changes.
+After making some changes, hit create csv shikder on 127.0.0.1:8000/myapp
+
+you can rename the output file name
+
+below is some examples
+
+
+general format:
+
+temp = GuruDB.objects.filter(Site_Type=1) # SELECT * FROM GuruDB WHERE Site_Type=1;
+
+temp = temp.filter(...condition 1 ...)
+temp = temp.filter(...condition 2 ...)
+
+Some Examples:
+1) Security issues
+
+temp = GuruDB.objects.filter(Site_Type=1) 
+
+temp = temp.filter(Q(Ssl_Ok__contains="date expired") | Q(Ssl_Ok__contains="No SSL")) 
+					
+# or logic evabe dite hoy
+
+temp = temp.filter(Load_Time__gte=0)
+temp = temp.filter(Score__gte=0)
+temp = temp.filter(Score__lte=3)
+temp = temp.filter(Google_Mobile_Score__gte=0)
+
+
+# 
+
+SELECT * FROM GuruDB WHERE 
+Site_Type=1 AND
+((Ssl_Ok__contains="date expired") OR (Ssl_Ok__contains="No SSL")) AND
+Load_Time__gte=0	AND
+0 <= Score <=3		AND
+Google_Mobile_Score>=0;
+
+2) Speed issues
+
+temp = GuruDB.objects.filter(Site_Type=1) 
+temp = temp.filter(Load_Time__gte=2.0)
+
+#
+SELECT * FROM GuruDB WHERE Load_Time >= 2 seconds;
+
+
+ok... Eid Mubarak!
